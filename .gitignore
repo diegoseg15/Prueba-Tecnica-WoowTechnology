@@ -29,6 +29,7 @@ logs/
 
 # DATABASE
 /data/
+/docker/postgres/init.sql
 *.sqlite
 *.db
 
