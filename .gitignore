@@ -1,0 +1,64 @@
+# NODE
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# BUILD
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# ENV
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+backend/.env
+frontend/.env
+
+# LOGS
+logs/
+*.log
+
+# DATABASE
+/data/
+*.sqlite
+*.db
+
+# DOCKER
+docker-compose.override.yml
+*.pid
+
+# OS FILES
+.DS_Store
+Thumbs.db
+
+# IDE / EDITOR
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# TESTS
+jest.config.js
+coverage/
+
+# CACHE
+.cache/
+.tmp/
+.temp/
+
+# FRONTEND (Vite)
+frontend/dist/
+frontend/node_modules/
+
+# BACKEND
+backend/dist/
+backend/node_modules/
