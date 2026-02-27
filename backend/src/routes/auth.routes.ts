@@ -5,7 +5,7 @@ import { body } from "express-validator";
 const router = Router();
 const controller = new AuthController();
 
-export default router.post(
+router.post(
   "/register",
   [
     body("name").notEmpty().withMessage("El nombre es un campo requerido"),
@@ -22,3 +22,15 @@ export default router.post(
   ],
   controller.register.bind(controller),
 );
+
+router.post(
+  "/login",
+  [
+    body("email").isEmail().withMessage("El email debe ser válido"),
+
+    body("password").notEmpty().withMessage("La contraseña es obligatoria"),
+  ],
+  controller.login.bind(controller),
+);
+
+export default router;
