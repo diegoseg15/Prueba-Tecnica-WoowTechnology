@@ -24,8 +24,7 @@ export class UserRepository {
   }
 
   async findById(id: string) {
-    const sql =
-      "Select id, name, role from users Where id = $1";
+    const sql = "Select id, name, role from users Where id = $1";
 
     const { rows } = await pool.query(sql, [id]);
 
@@ -38,5 +37,18 @@ export class UserRepository {
     const { rows } = await pool.query(sql, [name, id]);
 
     return rows[0] || null;
+  }
+
+  async findAll(limit: number, offset: number) {
+    const sql =
+      "Select id, name, email, role from users Order by createdAt Desc Limit $1 Offset $2";
+    const { rows } = await pool.query(sql, [limit, offset]);
+    return rows;
+  }
+
+  async countAll() {
+    const sql = "Select Count(*) From users";
+    const { rows } = await pool.query(sql);
+    return Number(rows[0].count);
   }
 }
