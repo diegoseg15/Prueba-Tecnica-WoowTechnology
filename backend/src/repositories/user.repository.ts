@@ -16,10 +16,27 @@ export class UserRepository {
     role: "user" | "admin";
   }): Promise<User> {
     const sql =
-      "Insert into users (name, email, password, role) values ($1, $2, $3, $4) Returning id, name, email, role";
+      "Insert into users (name, email, password, role, createdAt) values ($1, $2, $3, $4, now()) Returning id, name, email, role, createdAt";
     const values = [user.name, user.email, user.password, user.role];
 
     const { rows } = await pool.query(sql, values);
     return rows[0];
+  }
+
+  async findById(id: string) {
+    const sql =
+      "Select id, name, role from users Where id = $1";
+
+    const { rows } = await pool.query(sql, [id]);
+
+    return rows[0] || null;
+  }
+
+  async updateName(id: string, name: string) {
+    const sql =
+      "Update users Set name = $1, updatedAt = now() Where id = $2 Returning id, name, email, role, createdAt, updatedAt";
+    const { rows } = await pool.query(sql, [name, id]);
+
+    return rows[0] || null;
   }
 }
