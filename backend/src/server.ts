@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import authRoutes from "./routes/auth.routes";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ app.get("/", (_req, res) => {
     message: "API funcionandoooo!!",
   });
 });
+
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3000;
 
