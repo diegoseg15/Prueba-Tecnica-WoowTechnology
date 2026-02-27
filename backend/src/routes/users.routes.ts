@@ -2,6 +2,7 @@ import { Router } from "express";
 import { body } from "express-validator";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { UserController } from "../controllers/user.controller";
+import { requireRole } from "../middlewares/requireRole.middleware";
 
 const router = Router();
 const controller = new UserController();
@@ -19,6 +20,13 @@ router.put(
       .withMessage("El nombre debe tener al menos 2 caracteres"),
   ],
   controller.updateProfile.bind(controller),
+);
+
+router.get(
+  "/",
+  authMiddleware,
+  requireRole("admin"),
+  controller.getAll.bind(controller),
 );
 
 export default router;
