@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
   const { login, loading } = useAuth();
@@ -46,6 +46,9 @@ export const LoginPage = () => {
           Iniciar Sesión
         </button>
       </form>
+      <p style={{ marginTop: 10 }}>
+        ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
+      </p>
     </div>
   );
 };
