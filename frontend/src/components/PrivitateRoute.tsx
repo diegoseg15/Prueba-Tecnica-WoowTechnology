@@ -3,11 +3,11 @@ import { useAuth } from "../contexts/AuthContext";
 import type { ReactNode } from "react";
 
 export const PrivateRoute = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth();
+  const { token } = useAuth();
 
-  if (!user) {
+  if (!token) {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return <>{children}</>;
 };
