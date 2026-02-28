@@ -1,10 +1,18 @@
-import { createContext, useContext, useState } from "react";
-import type { ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { api } from "../services/api";
-import type { User, LoginResponse } from "../types/auth.types";
+import type { LoginResponse, User } from "../types/auth.types";
 
 interface AuthContextType {
+  token: string | null;
   user: User | null;
+  setUser: (u: User | null) => void;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   loading: boolean;
@@ -13,26 +21,41 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user")!)
-      : null
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token"),
   );
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!token) return;
+
+      try {
+        setLoading(true);
+        const { data } = await api.get<User>("/users/me");
+
+        setUser(data);
+      } catch (err) {
+        console.log("ERROR EN /users/me:", err);
+        logout();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [token]);
 
   const login = async (email: string, password: string) => {
     try {
       setLoading(true);
-
       const { data } = await api.post<LoginResponse>("/auth/login", {
         email,
         password,
       });
-
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      setUser(data.user);
+      setToken(data.token);
     } finally {
       setLoading(false);
     }
@@ -40,21 +63,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    setToken(null);
     setUser(null);
   };
 
-  return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({ token, user, setUser, login, logout, loading }),
+    [token, user, loading],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth debe usarse dentro de AuthProvider");
-  }
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth debe usarse dentro de AuthProvider");
+  return ctx;
 };
