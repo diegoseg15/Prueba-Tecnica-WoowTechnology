@@ -24,7 +24,7 @@ export class UserRepository {
   }
 
   async findById(id: string) {
-    const sql = "Select id, name, role from users Where id = $1";
+    const sql = "Select id, email, name, role from users Where id = $1";
 
     const { rows } = await pool.query(sql, [id]);
 
