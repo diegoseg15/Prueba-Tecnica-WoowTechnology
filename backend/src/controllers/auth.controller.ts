@@ -4,7 +4,20 @@ import { AuthService } from "../services/auth.service";
 
 const authService = new AuthService();
 
+/**
+ * Controlador de autenticación
+ *
+ * Responsabilidad:
+ * - Orquestar request/response
+ * - Validar entrada
+ * - Delegar lógica de negocio al Service
+ *
+ * No contiene lógica de negocio
+ */
+
 export class AuthController {
+
+  // Registro de un usuario nuevo
   async register(req: Request, res: Response) {
     try {
       const errors = validationResult(req);
@@ -34,6 +47,7 @@ export class AuthController {
     }
   }
 
+  // Inicio de sesión
   async login(req: Request, res: Response) {
     try {
       const errors = validationResult(req);
@@ -47,6 +61,7 @@ export class AuthController {
 
       const result = await authService.login(req.body);
 
+      // retorna el token y datos del usuario
       return res.status(200).json({
         message: "Login exitoso",
         token: result.token,
@@ -67,6 +82,4 @@ export class AuthController {
       });
     }
   }
-
-  
 }

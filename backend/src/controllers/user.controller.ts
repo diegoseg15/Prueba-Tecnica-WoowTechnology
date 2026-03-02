@@ -5,7 +5,15 @@ import { UserService } from "../services/user.service";
 
 const userService = new UserService();
 
+/**
+ * Controlador de usuarios
+ *
+ * Requiere middleware previo de autenticación
+ * para el envío de `req.user` desde el JWT
+ */
+
 export class UserController {
+  // Se obtiene el perfíl del usuario autenticado
   async getProfile(req: AuthenticatedRequest, res: Response) {
     try {
       const userId = req.user!.userId;
@@ -20,6 +28,7 @@ export class UserController {
     }
   }
 
+  // Actualizar el nombre del usuario
   async updateProfile(req: AuthenticatedRequest, res: Response) {
     try {
       const errors = validationResult(req);
@@ -35,6 +44,7 @@ export class UserController {
 
       const updatedUser = await userService.updateProfile(userId, name);
 
+      // retorna los datos actualizados
       return res.status(200).json({
         message: "Perfil actualizado",
         user: updatedUser,
@@ -46,6 +56,13 @@ export class UserController {
     }
   }
 
+/**
+   * Listado paginado de usuarios.
+   *
+   * Decisión:
+   * - Paginación para evitar consultas masivas.
+   * - Valores por defecto (page=1, limit=10).
+   */  
   async getAll(req: AuthenticatedRequest, res: Response) {
     try {
       const page = Number(req.query.page) || 1;
