@@ -1,8 +1,11 @@
 import { UserRepository } from "../repositories/user.repository";
 
+// Service Usuarios
+
 export class UserService {
   private userRepository = new UserRepository();
 
+  // Se obtiene el perfíl 
   async getProfile(userId: string) {
     const user = await this.userRepository.findById(userId);
 
@@ -15,6 +18,7 @@ export class UserService {
     return user;
   }
 
+  // Se actualiza el nombre del usuario
   async updateProfile(userId: string, name: string) {
     const updatedUser = await this.userRepository.updateName(userId, name);
 
@@ -27,6 +31,7 @@ export class UserService {
     return updatedUser;
   }
 
+  // listado de todos los usuarios
   async getAllUsers(page: number, limit: number = 10) {
     const offset = (page - 1) * limit;
 
