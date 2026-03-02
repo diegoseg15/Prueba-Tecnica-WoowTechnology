@@ -1,7 +1,18 @@
 import { pool } from "../config/db";
 import { User } from "../models/user.model";
 
+/**
+ * Repository de acceso a datos.
+ *
+ * Principios:
+ * - No contiene lógica de negocio.
+ * - Todas las consultas están parametrizadas (prevención de SQL Injection).
+ * - Devuelve entidades o null, nunca lanza errores de dominio.
+ */
+
 export class UserRepository {
+
+  //Buscar usuario por email
   async findByEmail(email: string): Promise<User | null> {
     const sql = "Select * from users Where email = $1";
 
@@ -9,6 +20,7 @@ export class UserRepository {
     return rows[0] || null;
   }
 
+  //Crear un nuevo usario
   async create(user: {
     name: string;
     email: string;
@@ -23,6 +35,7 @@ export class UserRepository {
     return rows[0];
   }
 
+  //Busacar usuairo por id
   async findById(id: string) {
     const sql = "Select id, email, name, role from users Where id = $1";
 
@@ -31,6 +44,7 @@ export class UserRepository {
     return rows[0] || null;
   }
 
+  //Actualizar el nombre del usuario
   async updateName(id: string, name: string) {
     const sql =
       "Update users Set name = $1, updatedAt = now() Where id = $2 Returning id, name, email, role, createdAt, updatedAt";
@@ -39,6 +53,7 @@ export class UserRepository {
     return rows[0] || null;
   }
 
+  // Listado de usuarios con páginación (limit/offset)
   async findAll(limit: number, offset: number) {
     const sql =
       "Select id, name, email, role from users Order by createdAt Desc Limit $1 Offset $2";
@@ -46,6 +61,7 @@ export class UserRepository {
     return rows;
   }
 
+  // Total de usuarios registrados
   async countAll() {
     const sql = "Select Count(*) From users";
     const { rows } = await pool.query(sql);
