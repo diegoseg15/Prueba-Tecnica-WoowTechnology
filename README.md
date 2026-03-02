@@ -56,7 +56,7 @@ cd Prueba-Tecnica-WoowTechnology
 
 ### 2️⃣ Configurar variables de entorno
 
-Crear archivo `.env` en la raíz:
+Eliminar `.env.example` y replazarlo por `.env`, el contenido debe tener esta información:
 
 ```env
 PORT=3000
