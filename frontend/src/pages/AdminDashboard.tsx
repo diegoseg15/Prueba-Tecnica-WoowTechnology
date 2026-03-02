@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import { getUsers } from "../services/admin.service";
 import type { User } from "../types/auth.types";
 
+/**
+ * Dashboard administrativo.
+ *
+ * Responsabilidades:
+ * - Listado paginado de usuarios
+ * - Manejo de estado local (loading, error)
+ */
+
 export const AdminDashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState(1);

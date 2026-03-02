@@ -2,6 +2,14 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../services/auth.service";
 
+/**
+ * Registro de usuario
+ *
+ * Flujo:
+ * - Validación cliente
+ * - Manejo de errores backend
+ */
+
 export const RegisterPage = () => {
   const navigate = useNavigate();
 

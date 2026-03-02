@@ -2,6 +2,13 @@ import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
+/**
+ * Login controlado.
+ *
+ * Flujo:
+ * - Validación básica cliente
+ */
+
 export const LoginPage = () => {
   const { login, loading } = useAuth();
   const navigate = useNavigate();

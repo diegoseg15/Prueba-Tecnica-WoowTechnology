@@ -4,6 +4,15 @@ import { getMe, updateMe } from "../services/users.service";
 import { useAuth } from "../contexts/AuthContext";
 import type { User } from "../types/auth.types";
 
+/**
+ * Perfil del usuario autenticado.
+ *
+ * Responsabilidades:
+ * - Sincronizar estado local con backend
+ * - Permitir edición de nombre
+ * - Manejar errores de sesión inválida
+ */
+
 export const ProfilePage = () => {
   const { logout, setUser } = useAuth();
   const navigate = useNavigate();
