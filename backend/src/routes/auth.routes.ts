@@ -5,6 +5,14 @@ import { body } from "express-validator";
 const router = Router();
 const controller = new AuthController();
 
+/**
+ * Registro de usuario.
+ *
+ * Decisiones:
+ * - Validación
+ * - Se evita que datos inválidos lleguen al Service
+ */
+
 router.post(
   "/register",
   [
@@ -22,6 +30,12 @@ router.post(
   ],
   controller.register.bind(controller),
 );
+
+/**
+ * Login.
+ *
+ * Se valida formato 
+ */
 
 router.post(
   "/login",

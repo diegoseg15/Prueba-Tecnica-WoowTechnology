@@ -7,8 +7,20 @@ import { requireRole } from "../middlewares/requireRole.middleware";
 const router = Router();
 const controller = new UserController();
 
+/**
+ * Perfil del usuario autenticado
+ *
+ * Con autenticación 
+ */
+
 router.get("/me", authMiddleware, controller.getProfile.bind(controller));
 
+
+/**
+ * Actualización parcial del perfil
+ *
+ * Se valida input antes de llegar al controller
+ */
 router.put(
   "/me",
   authMiddleware,
@@ -21,6 +33,13 @@ router.put(
   ],
   controller.updateProfile.bind(controller),
 );
+
+/**
+ * Listado global de usuarios
+ *
+ * - Requiere autenticación.
+ * - Requiere rol admin
+ */
 
 router.get(
   "/",
