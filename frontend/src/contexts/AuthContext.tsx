@@ -20,12 +20,23 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/**
+ * Provider global de autenticación.
+ *
+ * Responsabilidades:
+ * - Persistencia de token
+ * - Sincronización con backend (/users/me)
+ * - Manejo de login/logout
+ */
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token"),
   );
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // En el UseEffect se ejecuta cuando el token cambia
 
   useEffect(() => {
     const fetchUser = async () => {
